@@ -3,19 +3,24 @@ class CalendarsController < ApplicationController
   # １週間のカレンダーと予定が表示されるページ
   def index
     get_week
-    @plan = Plan.new
   end
-
+def new
+  @plan = Plan.new
+end
   # 予定の保存
   def create
-    Plan.create(plan_params)
+    @plan = Plan.new(plan_params)
+    if @plan.save
     redirect_to action: :index
+    else
+     render :new
   end
+end
 
   private
 
   def plan_params
-    params.require(:calendars).permit(:date, :plan)
+    params.permit(:date, :plan)
   end
 
   def get_week
